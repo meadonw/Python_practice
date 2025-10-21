@@ -1,51 +1,59 @@
-from statistics import mean, median, mode, geometric_mean, harmonic_mean
+import statistics
 
 
-def stats_calculator(*args, mode):
-    if mode == 1:
+def stats_calculator(*args, mode="basic"):
+    if mode == "basic":
         basic(*args)
-    elif mode == 2:
+    elif mode == "advanced":
         advanced(*args)
-    elif mode == 3:
+    elif mode == "scientific":
         scientific(*args)
 
 
 def basic(*args):
     print("Максимум:", max(args))
     print("Минимум:", min(args))
-    print("Среднее арифметическое:", mean(args))
+    print("Среднее арифметическое:", statistics.mean(args))
 
 
 def advanced(*args):
     basic(*args)
-    print("Медиана:", median(args))
-    print("Мода:", mode(args))
+    print("Медиана:", statistics.median(args))
+    try:
+        m = statistics.mode(args)
+        print("Мода:", m)
+    except statistics.StatisticsError:
+        print("Нет уникальной моды.")
 
 
 def scientific(*args):
     advanced(*args)
-    print("Среднее геометрическое:", geometric_mean(args))
-    print("Среднее гармоническое:", harmonic_mean(args))
+    try:
+        g = statistics.geometric_mean(args)
+        print("Среднее геометрическое:", g)
+    except statistics.StatisticsError:
+        print("Невозможно найти среднее геометрическое.")
+    try:
+        hm = statistics.harmonic_mean(args)
+        print("Среднее гармоническое:", hm)
+    except statistics.StatisticsError:
+        print("Невозможно найти среднее гармоническое.")
 
 
 def main():
     while True:
         try:
-            nums = list(map(int, input("Введите числа для анализа (через пробел): ").split()))
+            nums = list(map(float, input("Введите числа для анализа (через пробел): ").split()))
             if len(nums) != 0:
                 break
         except ValueError:
             print("Ошибка ввода данных. Пожалуйста, попробуйте снова.")
-    while True:
-        try:
-            mode = int(input("Выберите режим работы:\n1. basic\n2. advanced\n3. scientific\nВаш выбор (1-3): "))
-            if 1 <= mode <= 3:
-                break
-            else:
-                print("Ошибка. Введите число от 1 до 3!")
-        except ValueError:
-            print("Ошибка ввода данных. Пожалуйста, попробуйте снова.")
-    stats_calculator(*nums, mode=mode)
+
+    mode = input("Выберите режим работы:\n1. basic\n2. advanced\n3. scientific\nВаш выбор: ")
+    if mode in ["basic", "advanced", "scientific"]:
+        stats_calculator(*nums, mode=mode)
+    else:
+        stats_calculator(*nums)
 
 
 main()
