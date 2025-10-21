@@ -9,25 +9,26 @@ def check_dates(*dates):
         try:
             new_date = datetime.strptime(elem, '%d.%m.%Y')
             valid_dates.append(new_date)
-            if new_date > today:
-                future_dates.append(new_date)
         except ValueError:
             print(f"{elem} - некорректная дата.")
+    for date in valid_dates:
+        if date > today:
+            future_dates.append(date)
 
     if len(valid_dates) != 0:
         print("Найдено корректных дат:", len(valid_dates))
-        k = 1
+        n = 1
         for i in valid_dates:
-            print(f"{k})", i.strftime("%d.%m.%Y"))
-            k += 1
+            print(f"{n})", i.strftime("%d.%m.%Y"))
+            n += 1
         print("Самая ранняя дата:", min(valid_dates).strftime("%d.%m.%Y"))
         print("Самая поздняя дата", max(valid_dates).strftime("%d.%m.%Y"))
         if len(future_dates) != 0:
-            l = 1
+            n = 1
             print("Будущие даты:")
             for j in future_dates:
-                print(f"{l})", j.strftime("%d.%m.%Y"))
-                l += 1
+                print(f"{n})", j.strftime("%d.%m.%Y"))
+                n += 1
         else:
             print("Не найдено ни одной из будущих дат.")
     else:
@@ -46,16 +47,8 @@ def main():
             print("Ошибка ввода данных. Пожалуйста, попробуйте снова.")
     dates = []
     for _ in range(n):
-        while True:
-            try:
-                date = input("Введите дату в формате DD.MM.YYYY: ")
-                if date.count(".") == 2:
-                    dates.append(date)
-                    break
-                else:
-                    print("Ошибка ввода данных. Пожалуйста, попробуйте снова.")
-            except ValueError:
-                print("bad")
+        date = input("Введите дату в формате DD.MM.YYYY: ")
+        dates.append(date)
     check_dates(*dates)
 
 
